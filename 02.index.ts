@@ -68,3 +68,62 @@ function sth(x: string | null) {
   // }
   console.log(x.toUpperCase());
 }
+/**
+ * 类型收窄
+ * 常用语处理联合类型变量的场景
+ * 1.typeof
+ * 根据typeof返回的值进行检查时一种类型保护
+ * 但是typeof null 是object
+ * 2. 真实性缩小
+ * 条件语句中使用 &&  ||  !  !!
+ * 3. 平等缩小 
+ * ===  !==   ==  != 来缩小类型 
+*/
+
+interface Container {
+  value: number | null | undefined;
+}
+ 
+function multiplyValue(container: Container, factor: number) {
+  if (container.value != null) { // 不仅检查是否为null,也减产是否可能未定义
+    console.log(container.value);
+                           
+(property) Container.value: number
+    container.value *= factor;
+  }
+}
+
+/*
+4. in
+ 对象中是否有一个带名称的属性： in
+ 'name' in obj
+**/ 
+type Fish = { swim: () => void };
+type Bird = { fly: () => void };
+ 
+function move(animal: Fish | Bird) {
+  if ("swim" in animal) {
+    return animal.swim();
+  }
+ 
+  return animal.fly();
+}
+/***
+ * 5. instanceof
+ * 
+*/
+
+type Shape = Circle | Square;
+ 
+function getArea(shape: Shape) {
+  switch (shape.kind) {
+    case "circle":
+      return Math.PI * shape.radius ** 2;
+    case "square":
+      return shape.sideLength ** 2;
+    default:
+      const _exhaustiveCheck: never = shape; // never
+      return _exhaustiveCheck;
+  }
+}
+Try
